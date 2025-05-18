@@ -1,27 +1,59 @@
 package com.example.demo.model.applicance;
 
-import jakarta.persistence.Column;
+import com.example.demo.enums.ApplianceMode;
+import com.example.demo.enums.ApplianceType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Transient;
 
 /**
- * appliance common part
- * appliance can turn off
- * appliance has id, name
- * if wanna appliance more flexible can split function(interface), column class
- * thinking about status need to be a common column?
- * ?? why need to split each device? is that helpful?
+ * every IOT device is appliance
+ * appliance has switchable and mode controllable
  */
-@MappedSuperclass
-public abstract class Appliance {
+@Entity
+public class Appliance {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 50)
   private String name;
 
-  public abstract void turnOff();
+  @Enumerated(EnumType.STRING)
+  private ApplianceType type;
+
+  private String modeCode;
+
+  @Transient
+  private ApplianceMode mode;
+
+  @PostLoad
+  public void loadMode() {
+    if (type != null && modeCode != null) {
+      this.mode = type.parseMode(modeCode);
+    }
+  }
+
+  @PrePersist
+  @PreUpdate
+  public void persistMode() {
+    if (mode != null) this.modeCode = mode.name();
+    else new NullPointerException("mode is required value");
+  }
+
+  public void setMode(ApplianceMode mode) {
+    this.mode = mode;
+    this.modeCode = mode.name();
+  }
+
+  public ApplianceMode getMode() {
+    return this.mode;
+  }
 }
