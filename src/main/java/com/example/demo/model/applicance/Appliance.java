@@ -56,4 +56,7 @@ public class Appliance {
   public ApplianceMode getMode() {
     return this.mode;
   }
+  public ApplianceType getType() {
+    return this.type;
+  }
 }
