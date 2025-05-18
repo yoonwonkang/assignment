@@ -16,7 +16,7 @@ public enum ApplianceType {
 
   public ApplianceMode parseMode(String name) {
     for (ApplianceMode mode : modeClass.getEnumConstants()) {
-        if (mode.name().equalsIgnoreCase(name)) return mode;
+      if (mode.name().equalsIgnoreCase(name)) return mode;
     }
     throw new IllegalArgumentException("Invalid mode " + name + " for type " + this.name());
 }
