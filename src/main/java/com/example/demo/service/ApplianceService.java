@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.enums.ApplianceMode;
@@ -19,14 +21,16 @@ public class ApplianceService {
   private final ApplianceRepository applianceRepository;
   private final Map<ApplianceType, Switchable<?>> strategyMap;
 
+  private static final Logger logger = LogManager.getLogger(ApplianceService.class);
+
   public ApplianceService(ApplianceRepository applianceRepository, List<Switchable<?>> strategyList) {
     this.applianceRepository = applianceRepository;
     this.strategyMap = strategyList.stream().collect(Collectors.toMap(Switchable::getTargetType, s -> s));
   }
 
   public void updateMode(Long applianceId, String modeName) {
+    logger.info("Received Appliance Id : {}, ModeName : {} ", applianceId, modeName);
     Appliance appliance = applianceRepository.findById(applianceId).orElseThrow(() -> new NoSuchElementException("Appliance not found"));
-
     ApplianceMode mode = appliance.getType().parseMode(modeName);
     appliance.setMode(mode);
 
@@ -35,6 +39,7 @@ public class ApplianceService {
   }
 
   public void turnOffAll() {
+    logger.info("Turn off all apppliance");
     List<Appliance> appliances = applianceRepository.findAll();
     for( Appliance appliance : appliances ) {
       Switchable<?> strategy = strategyMap.get(appliance.getType());

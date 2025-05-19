@@ -1,0 +1,54 @@
+Configuration:
+  status: WARN
+  monitorInterval: 30
+  packages: org.apache.logging.log4j.core,org.apache.logging.log4j.layout.template.json
+
+  Properties:
+    Property:
+      - name: LOG_PATTERN
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+      - name: LOG_PATH
+        value: logs/app
+      - name: JSON_LOG_TEMPLATE
+        value: |
+          {
+            "timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}",
+            "level": "%level",
+            "thread": "%thread",
+            "logger": "%logger{36}",
+            "message": "%msg",
+            "context": "%mdc",
+            "exception": "%ex{full}"
+          }
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${LOG_PATTERN}
+
+    RollingFile:
+      name: FileAppender
+      fileName: ${LOG_PATH}/app.log
+      filePattern: ${LOG_PATH}/app-%d{yyyy-MM-dd}.log.gz
+      JsonTemplateLayout:
+        eventTemplate: ${JSON_LOG_TEMPLATE}
+      Policies:
+        TimeBasedTriggeringPolicy:
+          interval: 1
+        SizeBasedTriggeringPolicy:
+          size: 100MB
+
+  Loggers:
+    Logger:
+      - name: com.yourpackage
+        level: DEBUG
+        additivity: false
+        AppenderRef:
+          - ref: FileAppender
+    Root:
+      level: INFO
+      AppenderRef:
+        - ref: Console
+        - ref: FileAppender
