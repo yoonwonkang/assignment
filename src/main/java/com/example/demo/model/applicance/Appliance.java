@@ -2,6 +2,7 @@ package com.example.demo.model.applicance;
 
 import com.example.demo.enums.ApplianceMode;
 import com.example.demo.enums.ApplianceType;
+import com.example.dto.ApplianceDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,14 +15,25 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Transient;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * every IOT device is appliance
  * appliance has switchable and mode controllable
  */
 @Getter
+@NoArgsConstructor
 @Entity
 public class Appliance {
+
+  public Appliance(ApplianceDto dto) {
+    this.id = dto.getId();
+    this.name = dto.getName();
+    this.type = dto.getType();
+    this.mode = dto.getMode();
+    this.modeCode = dto.getMode().name();
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -54,4 +66,5 @@ public class Appliance {
     this.mode = mode;
     this.modeCode = mode.name();
   }
+
 }
