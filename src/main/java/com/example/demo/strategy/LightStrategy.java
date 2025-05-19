@@ -7,7 +7,7 @@ import com.example.demo.enums.LightMode;
 import com.example.demo.model.applicance.Appliance;
 
 @Component
-public class LightStrategy implements Switchable {
+public class LightStrategy implements Switchable<LightMode> {
 
   @Override
   public void turnOff(Appliance appliance) {
