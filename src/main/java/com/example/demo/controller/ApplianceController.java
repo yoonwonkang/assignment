@@ -35,6 +35,7 @@ public class ApplianceController {
   @PostMapping("off")
   public ResponseEntity<String> turnOffAllAppliance() {
     logger.info("[POST] /appliance/off start");
+    applianceService.turnOffAll();
     return ResponseEntity.ok("All Appliance Off");
   }
 
