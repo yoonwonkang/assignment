@@ -13,11 +13,13 @@ import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Transient;
+import lombok.Getter;
 
 /**
  * every IOT device is appliance
  * appliance has switchable and mode controllable
  */
+@Getter
 @Entity
 public class Appliance {
   @Id
@@ -51,12 +53,5 @@ public class Appliance {
   public void setMode(ApplianceMode mode) {
     this.mode = mode;
     this.modeCode = mode.name();
-  }
-
-  public ApplianceMode getMode() {
-    return this.mode;
-  }
-  public ApplianceType getType() {
-    return this.type;
   }
 }
