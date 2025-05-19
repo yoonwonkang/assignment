@@ -28,8 +28,19 @@ public class ApplianceService {
     this.strategyMap = strategyList.stream().collect(Collectors.toMap(Switchable::getTargetType, s -> s));
   }
 
+  public void updateMode(Long applianceId, ApplianceMode mode) {
+    logger.info("Received Appliance Id : {}, update Mode : {} ", applianceId, mode);
+    Appliance appliance = applianceRepository.findById(applianceId).orElseThrow(() -> new NoSuchElementException("Appliance not found"));
+    // ApplianceMode mode = appliance.getType().parseMode(modeName);x
+    appliance.setMode(mode);
+
+    applianceRepository.save(appliance);
+    // update IOT ->
+  }
+
+
   public void updateMode(Long applianceId, String modeName) {
-    logger.info("Received Appliance Id : {}, ModeName : {} ", applianceId, modeName);
+    logger.info("Received Appliance Id : {}, update ModeName : {} ", applianceId, modeName);
     Appliance appliance = applianceRepository.findById(applianceId).orElseThrow(() -> new NoSuchElementException("Appliance not found"));
     ApplianceMode mode = appliance.getType().parseMode(modeName);
     appliance.setMode(mode);
