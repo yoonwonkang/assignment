@@ -60,4 +60,5 @@ gradle-app.setting
 **/bin/
 
 /bin/
+/bin/main/**
 /.vscode/
