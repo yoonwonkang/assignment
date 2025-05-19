@@ -1,6 +1,5 @@
-PUT http://localhost:8080/appliance/1 HTTP/1.1
+PUT http://localhost:8080/appliance/2 HTTP/1.1
 content-type: application/json
-
 {
     "mode": "SPEED1",
     "type": "FAN"
