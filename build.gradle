@@ -37,6 +37,9 @@ dependencies {
 	// https://projectlombok.org
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.3'
 }
 
 tasks.named('test') {
