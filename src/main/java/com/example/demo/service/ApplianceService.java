@@ -14,6 +14,7 @@ import com.example.demo.enums.ApplianceType;
 import com.example.demo.model.applicance.Appliance;
 import com.example.demo.model.applicance.ApplianceRepository;
 import com.example.demo.strategy.Switchable;
+import com.example.dto.ApplianceDto;
 
 @Service
 public class ApplianceService {
@@ -28,10 +29,10 @@ public class ApplianceService {
     this.strategyMap = strategyList.stream().collect(Collectors.toMap(Switchable::getTargetType, s -> s));
   }
 
-  public Appliance updateMode(Long applianceId, ApplianceMode mode) {
-    logger.info("Received Appliance Id : {}, update Mode : {} ", applianceId, mode);
+  public Appliance updateMode(Long applianceId, ApplianceDto dto) {
+    logger.info("Received Appliance Id : {}, update DTO : {} ", applianceId, dto);
     Appliance appliance = applianceRepository.findById(applianceId).orElseThrow(() -> new NoSuchElementException("Appliance not found"));
-    // ApplianceMode mode = appliance.getType().parseMode(modeName);x
+    ApplianceMode mode = appliance.getType().parseMode(dto.getMode());
     appliance.setMode(mode);
 
     appliance = applianceRepository.save(appliance);

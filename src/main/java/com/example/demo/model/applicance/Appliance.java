@@ -30,8 +30,8 @@ public class Appliance {
     this.id = dto.getId();
     this.name = dto.getName();
     this.type = dto.getType();
-    this.mode = dto.getMode();
-    this.modeCode = dto.getMode().name();
+    this.mode = type.parseMode(dto.getMode());
+    this.modeCode = dto.getMode();
   }
 
   @Id
